@@ -18,11 +18,11 @@
         <br><br>
 
         <label for="distance">Distance (km):</label>
-        <input type="number" name="distance" id="distance" value="{{ old('distance', 10) }}" required>
+        <input type="number" name="distance" id="distance" value="{{ old('distance') }}" required>
         <br><br>
 
         <label for="weight">Weight (kg):</label>
-        <input type="number" name="weight" id="weight" value="{{ old('weight', 5) }}" required>
+        <input type="number" name="weight" id="weight" value="{{ old('weight') }}" required>
         <br><br>
 
         <button type="submit">Calcular</button>
