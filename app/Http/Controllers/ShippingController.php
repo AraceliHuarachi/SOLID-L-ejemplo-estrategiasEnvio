@@ -2,28 +2,38 @@
 
 namespace App\Http\Controllers;
 
-use App\Contracts\ShippingStrategy;
-use App\Services\Shipping\HomeDeliveryShipping;
-use App\Services\Shipping\PickupInStoreShipping;
+use Illuminate\Http\Request;
+use App\Services\ShippingService;
 
 class ShippingController extends Controller
 {
-    protected ShippingStrategy $shippingStrategy;
+    protected ShippingService $shippingService;
 
-    // Inyección de dependencia en el constructor
-    public function __construct(ShippingStrategy $shippingStrategy)
+    public function __construct(ShippingService $shippingService)
     {
-        $this->shippingStrategy = $shippingStrategy;
+        $this->shippingService = $shippingService;
     }
 
-    public function calculateShipping(array $orderDetails)
+    public function showForm()
     {
-        $cost = $this->shippingStrategy->calculateCost($orderDetails);
-        $time = $this->shippingStrategy->getDeliveryTime($orderDetails);
+        return view('shipping-test');
+    }
 
-        return response()->json([
-            'shipping_cost' => $cost,
-            'delivery_time' => $time,
+    public function calculateShipping(Request $request)
+    {
+        $orderDetails = [
+            'distance' => (float)$request->input('distance'),
+            'weight' => (float)$request->input('weight'),
+        ];
+
+        $results = $this->shippingService->calculateShipping($orderDetails);
+
+        return view('shipping-test', [
+            'delivery_type' => $request->input('delivery_type'),
+            'distance' => $orderDetails['distance'],
+            'weight' => $orderDetails['weight'],
+            'cost' => $results['cost'],
+            'time' => $results['time'],
         ]);
     }
 }
