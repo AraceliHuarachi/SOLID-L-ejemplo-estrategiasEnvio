@@ -15,15 +15,14 @@ class ShippingStrategyProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(ShippingStrategy::class, function ($app) {
-            // Usar configuración o lógica para decidir la estrategia
-            $strategy = config('shipping.strategy'); // Recuperamos la estrategia desde la configuración
+        $this->app->bind(ShippingStrategy::class, function () {
+            $deliveryType = request()->input('delivery_type', 'home');
 
-            if ($strategy === 'pickup') {
+            if ($deliveryType === 'pickup') {
                 return new PickupInStoreShipping();
             }
 
-            return new HomeDeliveryShipping(); // Valor por defecto
+            return new HomeDeliveryShipping();
         });
     }
 
