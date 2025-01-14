@@ -14,7 +14,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        // Cambia entre las estrategias según tus pruebas
+        // Switch between strategies based on your tests
         $this->app->bind(ShippingStrategy::class, PickupInStoreShipping::class);
     }
 
